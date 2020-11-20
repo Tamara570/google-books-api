@@ -1,61 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 
-class Search extends Component {
-
-
-  handleChange = (event) => {
-    console.log(event.target.id, event.target.value);
-    this.setState({
-      [event.target.id]: event.target.value,
-    });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.query}&key=AIzaSyAJ0_n3n5go4US0-QOwOQRPIiBjSjle3LY`;
-    if (this.state.filterType) {
-      url += `&filter=${this.state.filterType}`;
-    }
-    if (this.state.printType) {
-      url += `&printType=${this.state.printType}`;
-    }
-
-    const options = {
-      method: "GET",
-    };
-
-    fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Something went wrong, please try again later.");
-        }
-        return res;
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({
-          books: data.items || [],
-          title: "",
-          author: "",
-          listPrice: "",
-          description: "",
-          imageLinks: "",
-          error: null,
-        });
-      })
-      .catch((err) => {
-        this.setState({
-          error: err.message,
-        });
-      });
-  };
-
-  render() {
+function Search (props) {
     return (
       <div className="search-form">
         <div className="searchInput">
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={props.handleSubmit}>
             Search:
             <input
               type="text"
@@ -97,6 +46,6 @@ class Search extends Component {
       </div>
     );
   }
-}
+
 
 export default Search;
